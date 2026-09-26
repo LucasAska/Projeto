@@ -15,6 +15,8 @@ services:
       MYSQL_DATABASE: ProjetoDados
     ports:
       - "3306:3306"
+    volumes:
+      - ./banco:/docker-entrypoint-initdb.d
       
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
