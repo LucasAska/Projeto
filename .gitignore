@@ -1,0 +1,18 @@
+# Ambiente / dependências
+.env
+.vscode/
+.idea/
+
+# Uploads (arquivos enviados pelo admin em tempo real)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Backup do banco (caso você gere algum)
+backup_*.sql

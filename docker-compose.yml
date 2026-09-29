@@ -1,0 +1,53 @@
+services:
+  web:
+    build: .
+    container_name: milkamics_web
+    ports:
+      - "8080:80"          # acessa em http://localhost:8080
+    volumes:
+      - ./:/var/www/html   # código do seu PC → dentro do container
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_NAME: milka_mics
+      DB_USER: root
+      DB_PASS: root
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: milkamics_db
+    restart: unless-stopped
+    ports:
+      - "3307:3306"        # 3307 no host para não conflitar com MySQL local
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: milka_mics
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/01-database.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: milkamics_pma
+    ports:
+      - "8081:80"          # acessa em http://localhost:8081
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  db_data:

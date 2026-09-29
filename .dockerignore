@@ -1,0 +1,10 @@
+.git
+.gitignore
+.vscode
+.idea
+node_modules
+vendor
+*.log
+uploads/*
+!uploads/.gitkeep
+LEIA-ME.txt
