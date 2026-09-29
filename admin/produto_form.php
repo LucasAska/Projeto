@@ -1,6 +1,9 @@
 <?php
-$tituloPagina = 'Produto — Milka Mics';
-require_once __DIR__ . '/_header.php';
+// ============================================================
+// FASE 1 — Processamento (antes de qualquer HTML)
+// ============================================================
+require_once __DIR__ . '/../config/config.php';
+exigir_admin();
 
 $id = (int)($_GET['id'] ?? 0);
 $categorias = $pdo->query('SELECT * FROM categorias ORDER BY nome')->fetchAll();
@@ -46,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ? (int)reset($categoriasSelecionadas) : 0;
 
     $novaImagem = $produto['imagem'] ?? null;
+
     if (!empty($_FILES['imagem']['name']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION));
         $permitidas = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
@@ -94,11 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// ============================================================
+// FASE 2 — HTML (só depois de todo o processamento)
+// ============================================================
 $imgAtual = produto_imagem_url($produto['imagem'] ?? null);
 $catsDoProduto = $id ? array_column(categorias_do_produto($id), 'id') : [];
 if (!$catsDoProduto && !empty($produto['categoria_id'])) {
     $catsDoProduto = [(int)$produto['categoria_id']];
 }
+
+$tituloPagina = 'Produto — Milka Mics';
+require_once __DIR__ . '/_header.php';
 ?>
 
 <div class="titulo-secao">
