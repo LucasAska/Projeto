@@ -3,9 +3,8 @@
 .vscode/
 .idea/
 
-# Uploads (arquivos enviados pelo admin em tempo real)
-uploads/*
-!uploads/.gitkeep
+# Instalador local (não deve ir pro repositório)
+instalar.php
 
 # Logs
 *.log

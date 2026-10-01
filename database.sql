@@ -92,3 +92,9 @@ WHERE p.nome = 'Brinco de Coração em Crochê' AND c.slug IN ('brincos','croche
 
 INSERT IGNORE INTO produto_categoria (produto_id, categoria_id)
 SELECT id, categoria_id FROM produtos WHERE categoria_id IS NOT NULL;
+
+INSERT INTO usuarios (nome, email, senha, tipo) VALUES
+('Administradora Milka Mics',
+ 'admin@milkamics.com',
+ '$2y$10$8K1p/a0dL1LXMIgoEDFrwOfQcEDFvJ9K9qZbXG6m1XwH3yF5aJu7O',
+ 'admin');
