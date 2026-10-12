@@ -39,7 +39,7 @@
         <h1>Bem-vindo ao Sistema</h1>
         <p>Módulo de gestão e registo de utilizadores na base de dados.</p>
         
-        <a href="forms.php" class="btn">Novo Registo de Utilizador</a>
+        <a href="cadastro.php" class="btn">Novo Registo de Utilizador</a>
     </div>
 
 </body>
