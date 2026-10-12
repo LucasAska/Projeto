@@ -3,7 +3,7 @@
 ini_set('display_errors', 0);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-include 'conexao.php';
+require_once __DIR__ . '/config/conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     

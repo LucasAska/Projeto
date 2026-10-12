@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Cadastro de Novo Usuário</h2>
-    <form action="backend.php" method="POST">
+    <form action="cadastro_salvar.php" method="POST">
         <label>Nome Completo:</label><br>
         <input type="text" name="nome" maxlength="100" required><br><br>
 
