@@ -1,68 +1,211 @@
 <?php
-// Oculta os erros feios do PHP para mostrarmos apenas os nossos avisos personalizados
+
 ini_set('display_errors', 0);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 require_once __DIR__ . '/config/conexao.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    // Recebe os dados
-    $nome        = $_POST['nome'];
-    $telefone    = $_POST['telefone'];
-    $email       = $_POST['email'];
-    $senha       = $_POST['senha']; 
-    $cep         = $_POST['cep'];
-    $logradouro  = $_POST['logradouro'];
-    $numero      = $_POST['numero'];
-    $complemento = $_POST['complemento'];
-    $bairro      = $_POST['bairro'];
-    $cidade      = $_POST['cidade'];
-    $uf          = $_POST['uf'];
-    $tipo        = $_POST['tipo'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: cadastro.php');
+    exit;
+}
 
-    // Monta o SQL
+$nome        = trim($_POST['nome'] ?? '');
+$telefone    = trim($_POST['telefone'] ?? '');
+$email       = trim($_POST['email'] ?? '');
+$senha       = $_POST['senha'] ?? '';
+$cep         = trim($_POST['cep'] ?? '');
+$logradouro  = trim($_POST['logradouro'] ?? '');
+$numero      = trim($_POST['numero'] ?? '');
+$complemento = trim($_POST['complemento'] ?? '');
+$bairro      = trim($_POST['bairro'] ?? '');
+$cidade      = trim($_POST['cidade'] ?? '');
+$uf          = strtoupper(trim($_POST['uf'] ?? ''));
+
+$tipo = 'cliente';
+
+if (
+    $nome === '' || $telefone === '' || $email === '' ||
+    $senha === '' || $cep === '' || $logradouro === '' ||
+    $numero === '' || $bairro === '' || $cidade === '' ||
+    $uf === ''
+) {
+    exit('Preencha todos os campos obrigatórios.');
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    exit('Informe um endereço de e-mail válido.');
+}
+
+$senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+try {
     $sql = "INSERT INTO USUARIOS (
-                NOME, TELEFONE, EMAIL, SENHA, CEP, LOGRADOURO, 
-                NUMERO, COMPLEMENTO, BAIRRO, CIDADE, UF, TIPO
-            ) VALUES (
-                '$nome', '$telefone', '$email', '$senha', '$cep', '$logradouro', 
-                '$numero', '$complemento', '$bairro', '$cidade', '$uf', '$tipo'
-            )";
+        NOME, TELEFONE, EMAIL, SENHA, CEP, LOGRADOURO,
+        NUMERO, COMPLEMENTO, BAIRRO, CIDADE, UF, TIPO
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    // Estilo base para a página de resposta ficar centrada e bonita
-    echo "<div style='text-align:center; margin-top:100px; font-family:Arial, sans-serif;'>";
+    $stmt = $conexao->prepare($sql);
 
-    try {
-        // Tenta executar a gravação
-        $conexao->query($sql);
-        
-        // Se chegar aqui, deu tudo certo!
-        echo "<h2 style='color: #28a745;'>✅ Utilizador registado com sucesso!</h2>";
-        echo "<p>O e-mail <strong>$email</strong> foi adicionado ao sistema.</p><br>";
-        echo "<a href='index.php' style='padding:10px 20px; background:#007BFF; color:white; text-decoration:none; border-radius:5px;'>Voltar ao Início</a>";
+    $stmt->bind_param(
+        "ssssssssssss",
+        $nome,
+        $telefone,
+        $email,
+        $senhaHash,
+        $cep,
+        $logradouro,
+        $numero,
+        $complemento,
+        $bairro,
+        $cidade,
+        $uf,
+        $tipo
+    );
 
-    } catch (mysqli_sql_exception $e) {
-        
-        // Se falhar, o código cai diretamente aqui e analisamos o motivo
-        if ($e->getCode() == 1062) { 
-            // O código 1062 no MySQL significa especificamente "Entrada Duplicada"
-            echo "<h2 style='color: #dc3545;'>⚠️ Atenção: Este e-mail já está registado!</h2>";
-            echo "<p>O endereço <strong>$email</strong> já existe na nossa base de dados.</p>";
-            echo "<p>Por favor, utiliza um e-mail diferente.</p><br>";
-        } else {
-            // Qualquer outro erro não previsto
-            echo "<h2 style='color: #dc3545;'>❌ Ocorreu um problema ao registar:</h2>";
-            echo "<p>Erro técnico: " . $e->getMessage() . "</p><br>";
-        }
+    $stmt->execute();
 
-        // Botão para voltar atrás (usa o histórico para não apagar os campos que o utilizador já preencheu)
-        echo "<a href='javascript:history.back()' style='padding:10px 20px; background:#ffc107; color:#333; text-decoration:none; border-radius:5px; font-weight:bold; border: 1px solid #d39e00;'>⬅️ Voltar e Alterar E-mail</a>";
+    echo "<!DOCTYPE html>
+    <html lang='pt-BR'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Cadastro realizado | Milka Mics</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background: #fffaf7;
+                color: #333;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            header {
+                background: #fff;
+                padding: 20px 6%;
+                box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            }
+
+            .logo {
+                color: #a34f70;
+                font-size: 25px;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            main {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 20px;
+            }
+
+            .card {
+                background: #fff;
+                width: 100%;
+                max-width: 480px;
+                padding: 40px 30px;
+                text-align: center;
+                border-radius: 12px;
+                box-shadow: 0 2px 15px rgba(0,0,0,.08);
+            }
+
+            .icone {
+                width: 65px;
+                height: 65px;
+                margin: 0 auto 20px;
+                border-radius: 50%;
+                background: #f8e8ef;
+                color: #a34f70;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+            }
+
+            h1 {
+                color: #a34f70;
+                font-size: 27px;
+                margin-bottom: 15px;
+            }
+
+            p {
+                color: #666;
+                font-size: 16px;
+                line-height: 1.7;
+                margin-bottom: 12px;
+            }
+
+            .botao {
+                display: inline-block;
+                margin-top: 18px;
+                padding: 13px 25px;
+                background: #a34f70;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 6px;
+            }
+
+            .botao:hover {
+                background: #873d5b;
+            }
+
+            .rodape {
+                text-align: center;
+                padding: 22px;
+                background: #fff;
+                color: #777;
+                font-size: 14px;
+            }
+
+            @media (max-width: 600px) {
+                .card {
+                    padding: 30px 20px;
+                }
+
+                h1 {
+                    font-size: 23px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <a class='logo' href='index.php'>Milka Mics</a>
+        </header>
+
+        <main>
+            <section class='card'>
+                <div class='icone'>&#10003;</div>
+                <h1>Cadastro realizado!</h1>
+                <p>Sua conta foi criada com sucesso.</p>
+                <p>Agora você já pode fazer login e aproveitar a Milka Mics.</p>
+                <a class='botao' href='sing_in.php'>Fazer login</a>
+            </section>
+        </main>
+
+        <footer class='rodape'>
+            &copy; " . date('Y') . " Milka Mics. Todos os direitos reservados.
+        </footer>
+    </body>
+    </html>";
+
+} catch (mysqli_sql_exception $e) {
+    if ($e->getCode() == 1062) {
+        echo "Este e-mail já está cadastrado. ";
+        echo "<a href='cadastro.php'>Voltar ao cadastro</a>";
+    } else {
+        error_log('Erro no cadastro: ' . $e->getMessage());
+        http_response_code(500);
+        echo "Não foi possível concluir o cadastro. Tente novamente.";
     }
-
-    echo "</div>";
-
-} else {
-    echo "Acesso inválido.";
 }
 ?>
