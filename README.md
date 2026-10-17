@@ -1,9 +1,16 @@
-Pré-requisito: Instalar o Docker Desktop.
+# **Para visualização do Projeto**
+### ***Pré-requisito***: Instalar o Docker Desktop.
 
-Abrir a pasta com o VSCode
+## Abrir a pasta com o VSCode
 
-Iniciar o servidor: Abre o terminal do VSCode e digite: docker-compose up -d.
+## **Iniciar o servidor:** 
+Abre o terminal do VSCode e digite: docker-compose up -d.
 
-WebSite: Acessar a http://localhost
+### Obs.: 
+Ao iniciar o servidor automaticamente será instalado as ferramentas necessárias para mexer e rodar o projeto. 
 
-Para acessar a BD(phpMyAdmin), na barra de pesquisa: http://localhost:8081 (Usuario: root | Senha: root).
+### WebSite: Acessar a http://localhost:80
+### Para acessar a BD(phpMyAdmin), na barra de pesquisa:
+http://localhost:8081 (Usuario: root | Senha: root).
+
+#
