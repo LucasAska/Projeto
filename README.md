@@ -115,15 +115,16 @@ Relações principais: `PRODUTOS → CATEGORIAS`, `PEDIDOS → USUARIOS`, `PEDID
 - [x] Cadastro de usuário (senha salva com hash)
 - [x] Login com sessão e logout
 - [x] Página inicial que muda conforme o usuário está logado ou não
+- [x] Painel administrativo (`admin/`) – o link já aparece para admins e já está funcionando
+- [x] Pasta `uploads/` para imagens dos produtos
+ 
+
 
 ## O que falta fazer
 
-- [ ] Painel administrativo (`admin/`) – o link já aparece para admins, mas a página ainda não existe
 - [ ] CRUD de usuários e de uma segunda tabela (incluir, alterar, excluir com confirmação)
 - [ ] Mensagens de confirmação (incluído, alterado, excluído)
 - [ ] Listagem de produtos e pedidos
-- [ ] Pasta `uploads/` para imagens dos produtos
-
 ---
 
 ## Problemas comuns
