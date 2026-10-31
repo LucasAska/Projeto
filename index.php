@@ -168,7 +168,7 @@ $nomeUsuario = htmlspecialchars(
                 <span>Olá, <?= $nomeUsuario ?>!</span>
 
                 <?php if ($tipoUsuario === 'admin'): ?>
-                    <a href="admin/index.php">Painel administrativo</a>
+                    <a href="admin.php">Painel administrativo</a>
                 <?php endif; ?>
 
                 <a class="botao" href="logout.php">Sair</a>
