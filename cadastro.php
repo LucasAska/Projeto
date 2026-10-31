@@ -1,3 +1,11 @@
+<?php
+require_once __DIR__ . "/config/conexao.php";
+require_once __DIR__ . "/config/verifica_acesso.php";
+
+$tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -114,6 +122,16 @@
 
                 </div>
 
+                <div class="campo-tipo">
+                    <?php if ($tipoUsuario === 'admin'): ?>
+                        <label for="tipo">Tipo de conta</label>
+                        <select name="tipo">
+                            <option value="cliente" selected>Cliente</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    <?php endif; ?>
+                </div>
+                    
                 <div class="acoes">
                     <a href="index.php" class="voltar">Voltar</a>
                     <button type="submit">Criar minha conta</button>
