@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . "/config/conexao.php";
+require_once __DIR__ . "/config/verifica_acesso.php";
+
+$tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
+
+
 
 ini_set('display_errors', 0);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -22,7 +28,18 @@ $bairro      = trim($_POST['bairro'] ?? '');
 $cidade      = trim($_POST['cidade'] ?? '');
 $uf          = strtoupper(trim($_POST['uf'] ?? ''));
 
-$tipo = 'cliente';
+
+if ($tipoUsuario === 'admin'){
+    $tipo        = $_POST['tipo'] ?? '';
+}
+else{
+    $tipo = 'cliente';
+}
+
+
+
+
+
 
 if (
     $nome === '' || $telefone === '' || $email === '' ||
