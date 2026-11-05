@@ -49,12 +49,18 @@ $nomeUsuario = htmlspecialchars(
             gap: 15px;
         }
 
-        .logo {
-            color: #a34f70;
-            font-size: 25px;
-            font-weight: bold;
-            text-decoration: none;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
 
         .menu {
             display: flex;
@@ -86,54 +92,78 @@ $nomeUsuario = htmlspecialchars(
             color: #fff;
         }
 
-        main {
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 60px 20px;
-        }
+       main {
+    width: 100%;
+    padding: 0;
+    min-height: auto;
+}
 
-        main h1 {
-            color: #a34f70;
-            font-size: clamp(30px, 5vw, 46px);
-            margin-bottom: 18px;
-        }
+.banner-crossfade {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    background: #f5e8ec;
+}
 
-        main p {
-            color: #666;
-            font-size: 18px;
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
+.banner-imagem {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: troca-imagem 18s infinite;
+}
 
-        .destaque {
-            max-width: 650px;
-        }
+.banner-imagem-1 {
+    background-image: url('assets/images/banners/banner1.jpg');
+    animation-delay: 0s;
+}
 
-        .acoes {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+.banner-imagem-2 {
+    background-image: url('assets/images/banners/banner2.jpg');
+    animation-delay: 6s;
+}
 
-        .acoes a {
-            display: inline-block;
-            padding: 13px 22px;
-            background: #a34f70;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-        }
+.banner-imagem-3 {
+    background-image: url('assets/images/banners/banner3.jpg');
+    animation-delay: 12s;
+}
 
-        .acoes a.secundario {
-            background: #fff;
-            color: #a34f70;
-            border: 1px solid #a34f70;
-        }
+@keyframes troca-imagem {
+    0%, 30% {
+        opacity: 1;
+    }
+    33%, 100% {
+        opacity: 0;
+    }
+}
+
+.banner-botao {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 38px;
+    background: #a34f70;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 7px;
+    font-size: 17px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.banner-botao:hover {
+    background: #873d5b;
+}
+
+@media (max-width: 600px) {
+    .banner-crossfade {
+        height: 300px;
+    }
+}
 
         footer {
             text-align: center;
@@ -158,7 +188,9 @@ $nomeUsuario = htmlspecialchars(
 
 <header>
     <nav>
-        <a class="logo" href="index.php">Milka Mics</a>
+        <a class="logo" href="index.php">
+    <img src="assets/images/logo-milka.png" alt="Milka Mics">
+</a>
 
         <div class="menu">
             <a href="index.php">Início</a>
@@ -184,21 +216,17 @@ $nomeUsuario = htmlspecialchars(
 </header>
 
 <main>
-    <div class="destaque">
-        <h1>Bem-vindo à Milka Mics!</h1>
+    <section class="banner-crossfade">
 
-        <p>
-            Artesanato feito à mão, com carinho e criatividade
-            em cada detalhe.
-        </p>
+        <div class="banner-imagem banner-imagem-1"></div>
+        <div class="banner-imagem banner-imagem-2"></div>
+        <div class="banner-imagem banner-imagem-3"></div>
 
-        <?php if (!$usuarioLogado): ?>
-            <div class="acoes">
-                <a href="cadastro.php">Criar minha conta</a>
-                <a class="secundario" href="sing_in.php">Fazer login</a>
-            </div>
-        <?php endif; ?>
-    </div>
+        <a href="produtos.php" class="banner-botao">
+            Catálogo
+        </a>
+
+    </section>
 </main>
 
 <footer>
