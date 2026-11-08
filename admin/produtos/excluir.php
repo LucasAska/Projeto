@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($apagou) {
             // Remove o arquivo da imagem, se existir
             if (!empty($produto['IMAGEM'])) {
-                $arquivo = __DIR__ . '/../../uploads/produtos/' . basename($produto['IMAGEM']);
+                $arquivo = __DIR__ . '/../../assets/images/produtos/' . basename($produto['IMAGEM']);
                 if (is_file($arquivo)) {
                     unlink($arquivo);
                 }
@@ -62,23 +62,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: $lista");
     exit;
 }
+$titulo        = 'Excluir produto';
+$secaoAtual    = 'itens';
+$larguraClasse = 'container';
+require __DIR__ . '/../_topo.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Excluir produto</title>
-</head>
-<body>
-    <h1>Excluir produto</h1>
-    <p>Tem certeza que deseja excluir <strong><?= e($produto['NOME']) ?></strong>?</p>
-    <p>Esta ação não pode ser desfeita.</p>
 
-    <form method="post">
+<div class="cabecalho">
+    <h1>Excluir produto</h1>
+    <p>Essa ação não pode ser desfeita.</p>
+</div>
+
+<div class="card card-estreito">
+    <p class="confirmacao">
+        Tem certeza que deseja excluir <strong><?= e($produto['NOME']) ?></strong>?
+    </p>
+
+    <form method="post" class="acoes">
         <input type="hidden" name="id" value="<?= (int) $produto['ID'] ?>">
         <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>">
-        <button type="submit">Sim, excluir</button>
-        <a href="<?= $lista ?>">Cancelar</a>
+        <a href="<?= $lista ?>" class="voltar">Voltar</a>
+        <button type="submit" class="btn-perigo">Sim, excluir</button>
     </form>
-</body>
-</html>
+</div>
+
+<?php require __DIR__ . '/../_rodape.php'; ?>

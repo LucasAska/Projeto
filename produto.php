@@ -1,10 +1,10 @@
-
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 require_once __DIR__ . '/config/conexao.php';
+require_once __DIR__ . '/config/carrinho.php';
 
 // Recebe e valida o ID do produto pela URL
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -20,6 +20,7 @@ if (!$id || $id <= 0) {
                 p.DESCRICAO,
                 p.PRECO,
                 p.IMAGEM,
+                p.ESTOQUE,
                 c.NOME AS CATEGORIA
             FROM PRODUTOS p
             INNER JOIN CATEGORIAS c
@@ -327,10 +328,12 @@ $urlImagem = 'assets/images/produtos/'
         <div class="menu">
             <a href="index.php">Início</a>
             <a href="produtos.php">Produtos</a>
+            <a href="carrinho.php">Carrinho (<?= carrinho_quantidade_total() ?>)</a>
 
             <?php if ($usuarioLogado): ?>
 
                 <span>Olá, <?= $nomeUsuario ?>!</span>
+                <a href="meus_pedidos.php">Meus pedidos</a>
 
                 <?php if ($tipoUsuario === 'admin'): ?>
                     <a href="admin/index.php">Painel administrativo</a>
@@ -419,6 +422,24 @@ $urlImagem = 'assets/images/produtos/'
                         $produto['DESCRICAO'] ?: 'Descrição não disponível.'
                     ) ?>
                 </p>
+
+                <?php $aviso = estoque_aviso((int) $produto['ESTOQUE']); if ($aviso !== '' && (int) $produto['ESTOQUE'] > 0): ?>
+                    <p style="color:#c92a2a; font-weight:bold; margin:10px 0;"><?= htmlspecialchars($aviso, ENT_QUOTES, 'UTF-8') ?></p>
+                <?php endif; ?>
+                <?php if ((int) $produto['ESTOQUE'] > 0): ?>
+                    <form method="post" action="carrinho_acao.php" class="form-compra"
+                          style="display:flex; gap:10px; align-items:center; margin:20px 0; flex-wrap:wrap;">
+                        <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <input type="hidden" name="produto_id" value="<?= (int) $produto['ID'] ?>">
+                        <input type="number" name="quantidade" value="1" min="1"
+                               max="<?= (int) $produto['ESTOQUE'] ?>"
+                               style="width:90px; height:44px; padding:0 10px; border:1px solid #d9c8cf; border-radius:6px;">
+                        <button type="submit" class="btn-principal">Adicionar ao carrinho</button>
+                    </form>
+                <?php else: ?>
+                    <p style="color:#c92a2a; margin:20px 0;">Produto esgotado.</p>
+                <?php endif; ?>
 
                 <a class="btn-principal" href="produtos.php">
                     Voltar aos produtos

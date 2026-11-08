@@ -49,7 +49,7 @@ if ($checkProd && $checkProd->num_rows > 0) {
         <div class="menu">
             <a href="index.php">Ver Loja</a>
             <a href="admin_usuarios.php">Usuários</a>
-            <a href="admin_produtos.php">Itens</a>
+            <a href="admin/produtos/listar.php">Itens</a>
             <span>Olá, <?= $nomeAdmin ?>!</span>
             <a class="botao" href="logout.php">Sair</a>
         </div>
@@ -100,7 +100,7 @@ if ($checkProd && $checkProd->num_rows > 0) {
                     <p>Adicione novas peças de artesanato à vitrine da loja, defina preços, descrições e acompanhe os itens.</p>
                 </div>
                 <div class="acoes">
-                    <a href="admin_produtos.php" class="btn-primario">Gerenciar Itens</a>
+                    <a href="admin/produtos/listar.php" class="btn-primario">Gerenciar Itens</a>
                 </div>
             </div>
         </div>

@@ -1,142 +1,249 @@
-# Projeto Picanha no Alho
+# Milka Mics
 
-Sistema web em **PHP + MySQL** rodando em **Docker**, com cadastro, login e controle de sessão de usuários. O projeto ainda está em desenvolvimento.
+Loja virtual de artesanato, com vitrine, carrinho, finalização de pedidos, área do cliente e painel administrativo.
+
+Projeto acadêmico em PHP e MySQL, rodando em Docker.
+
+## Equipe
+
+- **Back-end:** Diego
+- **Front-end:** Jonatas
 
 ## Tecnologias
 
-- PHP 8.2 (Apache)
+- PHP 8.2 com Apache
 - MySQL 8.0
 - phpMyAdmin
-- Docker / Docker Compose
-
----
+- Docker e Docker Compose
+- HTML, CSS e JavaScript
 
 ## Como rodar o projeto
 
-### 1. Pré-requisitos
+### Pré-requisitos
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e **aberto**
-- [VSCode](https://code.visualstudio.com/) (opcional, mas recomendado)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e aberto
+- [VS Code](https://code.visualstudio.com/) (recomendado)
 
-### 2. Passo a passo
+### Passo a passo
 
-1. Clone o repositório e abra a pasta no VSCode.
-2. No terminal do VSCode, dentro da pasta do projeto, rode:
+1. Clone o repositório e abra a pasta no VS Code.
+2. No terminal, dentro da pasta do projeto, rode:
 
 ```bash
 docker-compose up -d
 ```
 
-Na primeira vez, o Docker baixa as imagens e cria o banco automaticamente (leva alguns minutos).
+Na primeira vez, o Docker baixa as imagens e cria o banco com os arquivos da pasta `banco/`. Isso pode levar alguns minutos.
 
-### 3. Acessos
+Se alterar o `Dockerfile`, use:
 
-| O quê | Endereço | Login |
-|---|---|---|
-| Site | http://localhost | – |
-| phpMyAdmin (banco) | http://localhost:8081 | usuário `root` / senha `root` |
+```bash
+docker-compose up -d --build
+```
 
-### Usuário de teste (admin)
+### Endereços
+
+| O quê | Endereço |
+|---|---|
+| Site | http://localhost |
+| Painel administrativo | http://localhost/admin.php |
+| phpMyAdmin | http://localhost:8081 (usuário `root`, senha `root`) |
+
+### Conta de administrador de teste
 
 | E-mail | Senha |
 |---|---|
 | `admin@loja.com` | `123456` |
 
-> Apenas para desenvolvimento. No primeiro login a senha é convertida para hash automaticamente.
+Use apenas para desenvolvimento.
 
----
-
-## Comandos úteis
+### Comandos úteis
 
 ```bash
 docker-compose up -d        # iniciar o projeto
-docker-compose down         # parar o projeto (apaga o banco!)
+docker-compose down         # parar o projeto (apaga os dados do banco)
 docker-compose logs -f      # ver os logs
-docker-compose ps           # ver o que está rodando
+docker-compose ps           # ver os serviços em execução
 ```
 
-### Resetar o banco de dados
+### Recriar o banco
 
-Os arquivos da pasta `banco/` só são executados quando o banco é **criado do zero**. Se você alterou os `.sql` e quer aplicar as mudanças:
+Os arquivos da pasta `banco/` só são executados quando o banco é criado do zero. Para aplicar alterações nos `.sql`, rode `docker-compose down` seguido de `docker-compose up -d`.
 
-```bash
-docker-compose down
-docker-compose up -d
+## Funcionalidades
+
+### Cliente
+
+- Cadastro de conta e login.
+- Página inicial com banners (`index.php`).
+- Catálogo (`produtos.php`), com busca, filtro por categoria e ordenação (mais recentes, menor preço, maior preço e nome).
+- Página do produto (`produto.php`), com foto, descrição, preço, aviso de estoque baixo e botão **Adicionar ao carrinho**.
+- Carrinho (`carrinho.php`), com alteração de quantidades, remoção (quantidade 0) e total.
+- Finalização de pedido, que exige login.
+- **Meus pedidos** (`meus_pedidos.php`), com status e itens de cada pedido.
+
+### Administrador
+
+- **Painel** (`admin.php`), com contagem de contas, administradores e itens.
+- **Produtos** (`admin/produtos/`): listar, cadastrar, alterar (inclusive a foto) e excluir.
+- **Usuários** (`admin_usuarios.php` e `editar_usuario.php`): listar, editar dados, tornar admin ou cliente e excluir.
+- **Pedidos** (`admin/pedidos/listar.php`): listar, filtrar por status e trocar o status.
+
+### API
+
+`api/produtos.php` devolve, em JSON, os produtos ativos e com estoque.
+
+```
+GET /api/produtos.php?busca=croche&pagina=1&por_pagina=12
 ```
 
-> Isso apaga todos os dados do banco e recria tudo a partir dos arquivos `.sql`.
+| Parâmetro | Descrição | Padrão |
+|---|---|---|
+| `busca` | Texto a pesquisar no nome, na descrição ou na categoria | vazio |
+| `pagina` | Número da página | 1 |
+| `por_pagina` | Itens por página (máximo 50) | 12 |
 
----
+## Regras de negócio
+
+| Situação | Comportamento |
+|---|---|
+| Produto inativo | Não aparece na vitrine e não pode ser comprado |
+| Produto sem estoque | Não aparece na vitrine; a página mostra "Produto esgotado." |
+| Quantidade acima do estoque | O carrinho recusa, e a finalização também |
+| Finalização com produto indisponível | Nenhum pedido é gravado |
+| Preço do pedido | Sempre lido do banco no momento da compra |
+| Cancelar pedido | Devolve as quantidades ao estoque |
+| Reativar pedido cancelado | Baixa o estoque de novo, se houver quantidade suficiente |
+| Excluir produto que está em pedidos | Recusado; o produto deve ser desativado |
+| Excluir usuário com pedidos | Recusado |
+| Admin excluir ou rebaixar a própria conta | Bloqueado |
+| E-mail repetido na edição de usuário | Recusado |
+
+### Aviso de estoque
+
+| Estoque | Mensagem na página do produto |
+|---|---|
+| 0 | "Produto esgotado." |
+| 1 | "Última unidade!" |
+| 2 ou 3 | "Últimas N unidades!" |
+| 4 ou mais | Nenhuma |
 
 ## Estrutura de pastas
 
 ```
-Projeto-picanha_no_alho/
+Projeto/
+├── admin/                       # Área administrativa
+│   ├── _topo.php                # Cabeçalho comum das telas do admin
+│   ├── _rodape.php              # Rodapé comum das telas do admin
+│   ├── index.php                # Redireciona para admin.php
+│   ├── produtos/                # Cadastro, alteração, exclusão e listagem
+│   └── pedidos/listar.php       # Pedidos e troca de status
+├── api/
+│   └── produtos.php             # Endpoint JSON da vitrine
 ├── assets/
-│   ├── css/style.css        # estilos (usado no cadastro)
-│   └── js/script.js         # scripts (ainda vazio)
+│   ├── css/                     # admin.css e style.css
+│   ├── images/banners/          # Banners da página inicial
+│   ├── images/produtos/         # Fotos dos produtos
+│   ├── images/logo-milka.png    # Logo
+│   └── js/script.js
 ├── banco/
-│   ├── 01_estrutura.sql     # criação das tabelas
-│   └── 02_dados.sql         # dados iniciais (categorias, produtos, admin)
+│   ├── 01_estrutura.sql         # Criação das tabelas
+│   └── 02_dados.sql             # Dados iniciais
 ├── config/
-│   └── conexao.php          # conexão com o MySQL
-├── cadastro.php             # formulário de cadastro
-├── cadastro_salvar.php      # grava o novo usuário no banco
-├── sing_in.php              # tela de login
-├── recebe.php               # valida e-mail/senha e abre a sessão
-├── logout.php               # encerra a sessão
-├── index.php                # página inicial
-├── docker-compose.yml       # serviços: web, db e phpmyadmin
-└── Dockerfile               # PHP 8.2 + Apache + mysqli/pdo_mysql
+│   ├── auth.php                 # exigir_admin(), flash(), exibir_flash(), e()
+│   ├── carrinho.php             # Carrinho, CSRF e aviso de estoque
+│   ├── conexao.php              # Conexão com o MySQL
+│   ├── verifica_acesso.php      # Verificação de acesso (usada pelo admin.php)
+│   └── vitrine.php              # Consulta de produtos da API
+├── admin.php                    # Painel administrativo
+├── admin_usuarios.php           # Lista de usuários
+├── editar_usuario.php           # Edição de dados de usuário
+├── carrinho.php                 # Página do carrinho
+├── carrinho_acao.php            # Adicionar e atualizar itens
+├── finalizar.php                # Criação do pedido
+├── meus_pedidos.php             # Pedidos do cliente
+├── index.php                    # Página inicial
+├── produtos.php                 # Catálogo
+├── produto.php                  # Página do produto
+├── cadastro.php                 # Cadastro de conta
+├── cadastro_salvar.php          # Grava a nova conta
+├── sing_in.php                  # Tela de login
+├── recebe.php                   # Valida o login e abre a sessão
+├── logout.php                   # Encerra a sessão
+├── docker-compose.yml
+├── Dockerfile
+└── README.md
 ```
-
----
 
 ## Banco de dados
 
-Nome do banco: `ProjetoDados`
+Nome do banco: `ProjetoDados`.
 
 | Tabela | Para que serve |
 |---|---|
-| `USUARIOS` | Dados pessoais, endereço e tipo (`cliente` ou `admin`) |
+| `USUARIOS` | Dados pessoais, endereço e tipo da conta (`cliente` ou `admin`) |
 | `CATEGORIAS` | Categorias dos produtos |
-| `PRODUTOS` | Produtos, preço, estoque e imagem |
-| `PEDIDOS` | Pedidos feitos pelos usuários (`pendente`, `atendido`, `cancelado`) |
-| `PEDIDOS_ITENS` | Itens de cada pedido |
+| `PRODUTOS` | Nome, descrição, preço, estoque, foto e status (ativo ou inativo) |
+| `PEDIDOS` | Pedidos, com status `pendente`, `atendido` ou `cancelado` |
+| `PEDIDOS_ITENS` | Itens de cada pedido, com quantidade e preço no momento da compra |
 
-Relações principais: `PRODUTOS → CATEGORIAS`, `PEDIDOS → USUARIOS`, `PEDIDOS_ITENS → PEDIDOS e PRODUTOS`.
+Relações: `PRODUTOS` pertence a `CATEGORIAS`; `PEDIDOS` pertence a `USUARIOS`; `PEDIDOS_ITENS` pertence a `PEDIDOS` e a `PRODUTOS`.
 
----
+## Fotos dos produtos
 
-## O que já funciona
+- Ficam em `assets/images/produtos/`.
+- A tabela `PRODUTOS` guarda só o nome do arquivo, no campo `IMAGEM`.
+- Formatos aceitos: JPG, PNG e WEBP, com até 10 MB.
+- Fotos enviadas pelo admin recebem um nome gerado, como `produto_d5e65c7520224a0e.png`.
+- O limite de upload é definido no `Dockerfile`.
 
-- [x] Ambiente Docker (site, banco e phpMyAdmin)
-- [x] Criação automática das tabelas e dos dados iniciais
-- [x] Cadastro de usuário (senha salva com hash)
-- [x] Login com sessão e logout
-- [x] Página inicial que muda conforme o usuário está logado ou não
-- [x] Painel administrativo (`admin/`) – o link já aparece para admins e já está funcionando
-- [x] Pasta `uploads/` para imagens dos produtos
- 
+## Testes
 
+Os testes são manuais. Já foram verificados:
 
-## O que falta fazer
+- Cadastro e login.
+- Adicionar produtos ao carrinho e finalizar pedido.
+- Pedido aparecendo no admin, com troca de status.
+- Cancelamento devolvendo estoque.
+- Exclusão de usuário sem pedidos.
+- Aviso de estoque e "Produto esgotado.".
+- Alteração de foto de produto.
+- Endpoint JSON da API.
+- Limite de upload de 10 MB.
 
-- [ ] CRUD de usuários e de uma segunda tabela (incluir, alterar, excluir com confirmação)
-- [ ] Mensagens de confirmação (incluído, alterado, excluído)
-- [ ] Listagem de produtos e pedidos
----
+Ainda não verificados:
+
+- Edição de dados de usuário, incluindo e-mail repetido.
+- Filtros de pedidos com vários pedidos.
+- Isolamento entre clientes em "Meus pedidos".
+- Bloqueio de exclusão de usuário com pedidos.
+- Reativação de pedido cancelado sem estoque suficiente.
+
+## Próximos passos
+
+- Carrinho lateral, que permite ver e alterar o carrinho sem sair da página.
+- Botão **Adicionar ao carrinho** também na listagem de produtos.
+- Cancelamento de pedido pelo cliente.
+- Endereço de entrega e pagamento.
+- Confirmação de pedido por e-mail.
+- Testes automatizados.
 
 ## Problemas comuns
 
-**Porta 80 ou 3306 já em uso**
-Feche outros servidores (XAMPP, WAMP, outro MySQL) ou mude a porta no `docker-compose.yml`.
+**Porta 80, 3306 ou 8081 já em uso**
+Feche outros servidores (XAMPP, WAMP ou outro MySQL) ou troque a porta no `docker-compose.yml`.
 
-**Site não abre**
-Confira se o Docker Desktop está aberto e rode `docker-compose ps` para ver se os 3 serviços estão ativos.
+**O site não abre**
+Confira se o Docker Desktop está aberto e rode `docker-compose ps`. Os três serviços devem estar ativos.
 
 **Erro de conexão com o banco logo após subir**
-O MySQL demora um pouco para iniciar. Aguarde cerca de 30 segundos e recarregue a página.
+O MySQL demora para iniciar. Aguarde cerca de 30 segundos e recarregue a página.
 
-**Alterei o `.sql` e nada mudou**
-Veja a seção [Resetar o banco de dados](#resetar-o-banco-de-dados).
+**Aviso "headers already sent"**
+Algum arquivo tem linha em branco ou espaço antes do `<?php`. A primeira linha do arquivo precisa ser `<?php`.
+
+**Foto não aparece**
+Confira se o nome do arquivo no banco (`PRODUTOS.IMAGEM`) é igual ao nome do arquivo em `assets/images/produtos/`, incluindo maiúsculas.
+
+**Alterei um `.sql` e nada mudou**
+Veja a seção [Recriar o banco](#recriar-o-banco).

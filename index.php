@@ -3,6 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/config/carrinho.php';
+
 $usuarioLogado = isset($_SESSION['usuario_id']);
 $nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
 $tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
@@ -194,10 +196,12 @@ $nomeUsuario = htmlspecialchars(
 
         <div class="menu">
             <a href="index.php">Início</a>
+            <a href="carrinho.php">Carrinho (<?= carrinho_quantidade_total() ?>)</a>
 
             <?php if ($usuarioLogado): ?>
 
                 <span>Olá, <?= $nomeUsuario ?>!</span>
+                <a href="meus_pedidos.php">Meus pedidos</a>
 
                 <?php if ($tipoUsuario === 'admin'): ?>
                     <a href="admin.php">Painel administrativo</a>

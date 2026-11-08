@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/config/conexao.php';
+require_once __DIR__ . '/config/carrinho.php';
 
 // Busca as categorias cadastradas
 $categorias = $conexao->query(
@@ -398,9 +399,11 @@ function formatarPreco($valor) {
 
         <div class="menu">
             <a href="index.php">Início</a>
+            <a href="carrinho.php">Carrinho (<?= carrinho_quantidade_total() ?>)</a>
 
             <?php if ($usuarioLogado): ?>
                 <span>Olá, <?= $nomeUsuario ?>!</span>
+                <a href="meus_pedidos.php">Meus pedidos</a>
 
                 <?php if ($tipoUsuario === 'admin'): ?>
                     <a href="admin/index.php">Painel administrativo</a>
