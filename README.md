@@ -210,14 +210,15 @@ Os testes são manuais. Já foram verificados:
 - Alteração de foto de produto.
 - Endpoint JSON da API.
 - Limite de upload de 10 MB.
-
+- Edição de dados de usuário, incluindo validação de e-mail duplicado.
+- Filtros de pedidos com diferentes status.
+- Isolamento entre clientes em "Meus pedidos".
+- Bloqueio de exclusão de usuário com pedidos vinculados.
+- Bloqueio da reativação de pedidos quando não há estoque suficiente.
+  
 Ainda não verificados:
 
-- Edição de dados de usuário, incluindo e-mail repetido.
-- Filtros de pedidos com vários pedidos.
-- Isolamento entre clientes em "Meus pedidos".
-- Bloqueio de exclusão de usuário com pedidos.
-- Reativação de pedido cancelado sem estoque suficiente.
+"Funcionalidades que não estavam verificadas foram concluídas."
 
 ## Próximos passos
 
