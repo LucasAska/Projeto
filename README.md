@@ -108,7 +108,7 @@ GET /api/produtos.php?busca=croche&pagina=1&por_pagina=12
 | Situação | Comportamento |
 |---|---|
 | Produto inativo | Não aparece na vitrine e não pode ser comprado |
-| Produto sem estoque | Não aparece na vitrine; a página mostra "Produto esgotado." |
+| Produto sem estoque | Não aparece na API. No catálogo (`produtos.php`), continua visível; na página do produto aparece "Produto esgotado." e o botão de compra some |
 | Quantidade acima do estoque | O carrinho recusa, e a finalização também |
 | Finalização com produto indisponível | Nenhum pedido é gravado |
 | Preço do pedido | Sempre lido do banco no momento da compra |
