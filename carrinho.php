@@ -18,15 +18,16 @@ $token       = csrf_token();
     <title>Carrinho | Milka Mics</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, Helvetica, sans-serif; background: #fffaf7; color: #333; min-height: 100vh; }
+        body { font-family: Arial, Helvetica, sans-serif; background: #fffaf7; color: #333; min-height: 100vh; display: flex; flex-direction: column;}
         header { background: #fff; padding: 20px 6%; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); }
         nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
-        .logo { color: #a34f70; font-size: 25px; font-weight: bold; text-decoration: none; }
+       .logo { display: flex; align-items: center; text-decoration: none; }
+       .logo img { height: 85px; width: auto; max-width: 220px; object-fit: contain; display: block; }
         .menu { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
         .menu a { color: #444; text-decoration: none; font-size: 15px; }
         .menu a:hover { color: #a34f70; }
         .menu .botao { background: #a34f70; color: #fff; padding: 11px 18px; border-radius: 6px; }
-        main { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        main { flex: 1; width: 100%; max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         h1 { color: #a34f70; margin-bottom: 24px; }
         .btn { display: inline-block; background: #a34f70; color: #fff; border: none; padding: 13px 22px; border-radius: 6px; text-decoration: none; font-size: 15px; cursor: pointer; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -45,7 +46,7 @@ $token       = csrf_token();
         .alerta-sucesso { background: #d4edda; color: #155724; }
         .alerta-erro { background: #f8d7da; color: #721c24; }
         .vazio { color: #777; font-size: 16px; margin-bottom: 20px; }
-        footer { text-align: center; padding: 22px; background: #fff; color: #777; font-size: 14px; margin-top: 40px; }
+        footer { text-align: center; padding: 22px; background: #fff; color: #777; font-size: 14px; margin-top: auto; }
         @media (max-width: 600px) {
             .item { grid-template-columns: 70px 1fr; }
             .item img, .sem-foto { width: 70px; height: 70px; }
@@ -57,7 +58,9 @@ $token       = csrf_token();
 
 <header>
     <nav>
-        <a class="logo" href="index.php">Milka Mics</a>
+     <a class="logo" href="index.php">
+    <img src="assets/images/logo-milka.png" alt="Milka Mics">
+</a>
 
         <div class="menu">
             <a href="index.php">Início</a>

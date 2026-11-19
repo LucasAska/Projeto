@@ -158,11 +158,18 @@ function formatarPreco($valor) {
         }
 
         .logo {
-            color: #a34f70;
-            font-size: 25px;
-            font-weight: bold;
-            text-decoration: none;
-        }
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+}
 
         .menu {
             display: flex;
@@ -395,7 +402,9 @@ function formatarPreco($valor) {
 
 <header>
     <nav>
-        <a class="logo" href="index.php">Milka Mics</a>
+        <a class="logo" href="index.php">
+    <img src="assets/images/logo-milka.png" alt="Milka Mics">
+</a>
 
         <div class="menu">
             <a href="index.php">Início</a>

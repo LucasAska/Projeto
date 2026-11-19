@@ -50,19 +50,19 @@ nav {
     gap: 15px;
 }
 
-.logo-area {
+.logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-}
-
-.logo {
-    color: var(--cor-principal);
-    font-size: 25px;
-    font-weight: bold;
     text-decoration: none;
 }
 
+.logo img {
+    height: 85px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+}
 .menu {
     display: flex;
     align-items: center;

@@ -30,12 +30,14 @@ $nomeUsuario = htmlspecialchars(
             box-sizing: border-box;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #fffaf7;
-            color: #333;
-            min-height: 100vh;
-        }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fffaf7;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
         header {
             background: #fff;
@@ -58,10 +60,13 @@ $nomeUsuario = htmlspecialchars(
 }
 
 .logo img {
-    height: 85px;
-    width: auto;
+    height: 85px !important;
+    max-height: 85px;
+    width: auto !important;
+    max-width: 220px;
     object-fit: contain;
     display: block;
+
 }
 
         .menu {
@@ -94,11 +99,10 @@ $nomeUsuario = htmlspecialchars(
             color: #fff;
         }
 
-       main {
-    width: 100%;
-    padding: 0;
-    min-height: auto;
+main {
+    flex: 1;
 }
+
 
 .banner-crossfade {
     position: relative;
@@ -167,13 +171,15 @@ $nomeUsuario = htmlspecialchars(
     }
 }
 
-        footer {
-            text-align: center;
-            padding: 22px;
-            background: #fff;
-            color: #777;
-            font-size: 14px;
-        }
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 22px;
+    background: #fff;
+    color: #777;
+    font-size: 14px;
+}
+
 
         @media (max-width: 600px) {
             nav {

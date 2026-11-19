@@ -17,8 +17,13 @@ $tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
 
 <body>
 
+
 <header>
-    <a class="logo" href="index.php">Milka Mics</a>
+    <nav>
+        <a class="logo" href="index.php">
+            <img src="assets/images/logo-milka.png" alt="Milka Mics">
+        </a>
+    </nav>
 </header>
 
 <main>

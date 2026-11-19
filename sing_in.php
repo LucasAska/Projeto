@@ -27,12 +27,19 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
 
-        .logo {
-            color: #a34f70;
-            font-size: 25px;
-            font-weight: bold;
-            text-decoration: none;
-        }
+     .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+}
 
         main {
             flex: 1;
@@ -192,7 +199,9 @@
 <body>
 
 <header>
-    <a class="logo" href="index.php">Milka Mics</a>
+    <a class="logo" href="index.php">
+    <img src="assets/images/logo-milka.png" alt="Milka Mics">
+</a>
 </header>
 
 <main>
