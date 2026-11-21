@@ -27,12 +27,19 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
 
-        .logo {
-            color: #a34f70;
-            font-size: 25px;
-            font-weight: bold;
-            text-decoration: none;
-        }
+     .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+}
 
         main {
             flex: 1;
@@ -188,12 +195,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <a class="logo" href="index.php">Milka Mics</a>
-</header>
+<?php $cabecalhoModo = 'simples'; require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <section class="login">

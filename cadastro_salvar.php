@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . "/config/conexao.php";
+require_once __DIR__ . "/config/verifica_acesso.php";
+
+$tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
+
+
 
 ini_set('display_errors', 0);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -22,7 +28,18 @@ $bairro      = trim($_POST['bairro'] ?? '');
 $cidade      = trim($_POST['cidade'] ?? '');
 $uf          = strtoupper(trim($_POST['uf'] ?? ''));
 
-$tipo = 'cliente';
+
+if ($tipoUsuario === 'admin'){
+    $tipo        = $_POST['tipo'] ?? '';
+}
+else{
+    $tipo = 'cliente';
+}
+
+
+
+
+
 
 if (
     $nome === '' || $telefone === '' || $email === '' ||
@@ -176,10 +193,17 @@ try {
                 }
             }
         </style>
+        <link rel='stylesheet' href='assets/css/cabecalho.css'>
     </head>
     <body>
-        <header>
-            <a class='logo' href='index.php'>Milka Mics</a>
+        <header class='site-header'>
+            <nav class='site-nav'>
+                <div class='site-logo-area'>
+                    <a class='site-logo' href='index.php'>
+                        <img src='assets/images/logo-milka-cabecalho.png' alt='Milka Mics'>
+                    </a>
+                </div>
+            </nav>
         </header>
 
         <main>

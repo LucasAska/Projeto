@@ -1,0 +1,106 @@
+.site-header {
+    background: #fff;
+    padding: 12px 6%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+}
+
+.site-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.site-logo img {
+    height: 56px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+}
+
+.site-badge-admin {
+    background: #fff4f7;
+    color: #a34f70;
+    border: 1px solid #e1d4d9;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.site-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px 22px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.site-menu a {
+    color: #444;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+}
+
+.site-menu a:hover {
+    color: #a34f70;
+}
+
+.site-usuario {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-left: 22px;
+    border-left: 1px solid #eee2e7;
+}
+
+.site-saudacao {
+    font-size: 15px;
+    color: #444;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.site-saudacao strong {
+    color: #a34f70;
+}
+
+.site-menu a.site-botao {
+    background: #a34f70;
+    color: #fff;
+    padding: 11px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.site-menu a.site-botao:hover {
+    background: #873d5b;
+    color: #fff;
+}
+
+@media (max-width: 720px) {
+    .site-header { padding: 12px 4%; }
+    .site-logo img { height: 46px; }
+    .site-nav { justify-content: center; }
+    .site-menu { margin-left: 0; justify-content: center; }
+    .site-usuario { border-left: 0; padding-left: 0; }
+}

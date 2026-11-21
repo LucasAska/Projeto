@@ -18,7 +18,7 @@ if ($email === "" || $senhaDigitada === "") {
 
 require_once __DIR__ . "/config/conexao.php";
 
-$sql = "SELECT id, NOME, EMAIL, SENHA, TIPO
+$sql = "SELECT ID, NOME, EMAIL, SENHA, TIPO
         FROM USUARIOS
         WHERE EMAIL = ?
         LIMIT 1";
@@ -56,7 +56,7 @@ if (!$senhaValida && hash_equals($senhaBanco, $senhaDigitada)) {
     $atualizar->bind_param(
         "si",
         $novoHash,
-        $usuario["id"]
+        $usuario["ID"]
     );
 
     $atualizar->execute();
@@ -70,7 +70,7 @@ if (!$senhaValida) {
 
 session_regenerate_id(true);
 
-$_SESSION["usuario_id"] = $usuario["id"];
+$_SESSION["usuario_id"] = $usuario["ID"];
 $_SESSION["usuario_nome"] = $usuario["NOME"];
 $_SESSION["usuario_email"] = $usuario["EMAIL"];
 $_SESSION["usuario_tipo"] = $usuario["TIPO"];
