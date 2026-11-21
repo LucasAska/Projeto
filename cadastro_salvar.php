@@ -193,10 +193,17 @@ try {
                 }
             }
         </style>
+        <link rel='stylesheet' href='assets/css/cabecalho.css'>
     </head>
     <body>
-        <header>
-            <a class='logo' href='index.php'>Milka Mics</a>
+        <header class='site-header'>
+            <nav class='site-nav'>
+                <div class='site-logo-area'>
+                    <a class='site-logo' href='index.php'>
+                        <img src='assets/images/logo-milka-cabecalho.png' alt='Milka Mics'>
+                    </a>
+                </div>
+            </nav>
         </header>
 
         <main>

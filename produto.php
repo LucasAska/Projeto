@@ -317,39 +317,12 @@ $urlImagem = 'assets/images/produtos/'
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 
 <body>
 
-<header>
-    <nav>
-        <a class="logo" href="index.php">Milka Mics</a>
-
-        <div class="menu">
-            <a href="index.php">Início</a>
-            <a href="produtos.php">Produtos</a>
-            <a href="carrinho.php">Carrinho (<?= carrinho_quantidade_total() ?>)</a>
-
-            <?php if ($usuarioLogado): ?>
-
-                <span>Olá, <?= $nomeUsuario ?>!</span>
-                <a href="meus_pedidos.php">Meus pedidos</a>
-
-                <?php if ($tipoUsuario === 'admin'): ?>
-                    <a href="admin/index.php">Painel administrativo</a>
-                <?php endif; ?>
-
-                <a class="botao" href="logout.php">Sair</a>
-
-            <?php else: ?>
-
-                <a href="sing_in.php">Entrar</a>
-                <a class="botao" href="cadastro.php">Cadastrar</a>
-
-            <?php endif; ?>
-        </div>
-    </nav>
-</header>
+<?php require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
 

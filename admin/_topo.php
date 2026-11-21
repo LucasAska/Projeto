@@ -152,26 +152,11 @@ $nomeAdmin     = e($_SESSION['usuario_nome'] ?? 'Administrador');
             background: #a61e1e;
         }
     </style>
+    <link rel="stylesheet" href="/assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <nav>
-        <div class="logo-area">
-            <a class="logo" href="/index.php">Milka Mics</a>
-            <span class="badge-admin">Admin</span>
-        </div>
-
-        <div class="menu">
-            <a href="/index.php">Ver Loja</a>
-            <a href="/admin_usuarios.php">Usuários</a>
-            <a href="/admin/produtos/listar.php">Itens</a>
-            <a href="/admin/pedidos/listar.php">Pedidos</a>
-            <span>Olá, <?= $nomeAdmin ?>!</span>
-            <a class="botao" href="/logout.php">Sair</a>
-        </div>
-    </nav>
-</header>
+<?php $cabecalhoModo = 'admin'; require __DIR__ . '/../includes/cabecalho.php'; ?>
 
 <main>
     <div class="<?= e($larguraClasse) ?>">

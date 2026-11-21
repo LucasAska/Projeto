@@ -36,25 +36,11 @@ if ($checkProd && $checkProd->num_rows > 0) {
     <title>Painel Administrativo | Milka Mics</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <nav>
-        <div class="logo-area">
-            <a class="logo" href="index.php">Milka Mics</a>
-            <span class="badge-admin">Admin</span>
-        </div>
-
-        <div class="menu">
-            <a href="index.php">Ver Loja</a>
-            <a href="admin_usuarios.php">Usuários</a>
-            <a href="admin/produtos/listar.php">Itens</a>
-            <span>Olá, <?= $nomeAdmin ?>!</span>
-            <a class="botao" href="logout.php">Sair</a>
-        </div>
-    </nav>
-</header>
+<?php $cabecalhoModo = 'admin'; require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <div class="container-admin">

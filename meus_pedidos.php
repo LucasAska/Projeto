@@ -86,29 +86,11 @@ $stmtItens->close();
         .total { text-align: right; font-weight: bold; color: #a34f70; margin-top: 10px; font-size: 16px; }
         footer { text-align: center; padding: 22px; background: #fff; color: #777; font-size: 14px; margin-top: 40px; }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <nav>
-        <a class="logo" href="index.php">Milka Mics</a>
-
-        <div class="menu">
-            <a href="index.php">Início</a>
-            <a href="produtos.php">Produtos</a>
-            <a href="carrinho.php">Carrinho (<?= $qtdItens ?>)</a>
-            <a href="meus_pedidos.php">Meus pedidos</a>
-
-            <span>Olá, <?= $nomeUsuario ?>!</span>
-
-            <?php if ($tipoUsuario === 'admin'): ?>
-                <a href="admin.php">Painel administrativo</a>
-            <?php endif; ?>
-
-            <a class="botao" href="logout.php">Sair</a>
-        </div>
-    </nav>
-</header>
+<?php require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <h1>Meus pedidos</h1>

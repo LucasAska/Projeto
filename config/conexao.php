@@ -11,4 +11,7 @@ $conexao = new mysqli($servidor, $utilizador, $senha, $banco);
 if ($conexao->connect_error) {
     die("Falha na ligação: " . $conexao->connect_error);
 }
+
+$conexao->query("SET time_zone = '-03:00'");
+
 ?>

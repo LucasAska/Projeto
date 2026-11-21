@@ -195,14 +195,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <a class="logo" href="index.php">
-    <img src="assets/images/logo-milka.png" alt="Milka Mics">
-</a>
-</header>
+<?php $cabecalhoModo = 'simples'; require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <section class="login">

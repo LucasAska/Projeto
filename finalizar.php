@@ -51,9 +51,24 @@ try {
         ];
     }
 
-    // 2) Cria o pedido
-    $stmt = $conexao->prepare("INSERT INTO PEDIDOS (USUARIO_ID, STATUS) VALUES (?, 'pendente')");
+        // 2) Cria o pedido, guardando o endereço de entrega no momento da compra
+    $stmt = $conexao->prepare("SELECT CEP, LOGRADOURO, NUMERO, COMPLEMENTO, BAIRRO, CIDADE, UF FROM USUARIOS WHERE ID = ?");
     $stmt->bind_param('i', $usuarioId);
+    $stmt->execute();
+    $end = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $stmt = $conexao->prepare(
+        "INSERT INTO PEDIDOS (USUARIO_ID, STATUS, ENTREGA_CEP, ENTREGA_LOGRADOURO, ENTREGA_NUMERO,
+                              ENTREGA_COMPLEMENTO, ENTREGA_BAIRRO, ENTREGA_CIDADE, ENTREGA_UF)
+         VALUES (?, 'pendente', ?, ?, ?, ?, ?, ?, ?)"
+    );
+    $stmt->bind_param(
+        'isssssss',
+        $usuarioId,
+        $end['CEP'], $end['LOGRADOURO'], $end['NUMERO'], $end['COMPLEMENTO'],
+        $end['BAIRRO'], $end['CIDADE'], $end['UF']
+    );
     $stmt->execute();
     $pedidoId = (int) $conexao->insert_id;
     $stmt->close();

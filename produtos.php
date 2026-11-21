@@ -92,7 +92,7 @@ while ($produto = $resultado->fetch_assoc()) {
 }
 
 // Título da categoria selecionada
-$tituloAtual = "Todos os produtos";
+$tituloAtual = "Produtos";
 
 while ($categoria = $categorias->fetch_assoc()) {
     if ($categoria['SLUG'] === $slugCategoria) {
@@ -141,6 +141,8 @@ function formatarPreco($valor) {
             background: #fffaf7;
             color: #333;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -196,6 +198,8 @@ function formatarPreco($valor) {
         }
 
         main {
+            flex: 1;
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 45px 20px 60px;
@@ -396,36 +400,12 @@ function formatarPreco($valor) {
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 
 <body>
 
-<header>
-    <nav>
-        <a class="logo" href="index.php">
-    <img src="assets/images/logo-milka.png" alt="Milka Mics">
-</a>
-
-        <div class="menu">
-            <a href="index.php">Início</a>
-            <a href="carrinho.php">Carrinho (<?= carrinho_quantidade_total() ?>)</a>
-
-            <?php if ($usuarioLogado): ?>
-                <span>Olá, <?= $nomeUsuario ?>!</span>
-                <a href="meus_pedidos.php">Meus pedidos</a>
-
-                <?php if ($tipoUsuario === 'admin'): ?>
-                    <a href="admin/index.php">Painel administrativo</a>
-                <?php endif; ?>
-
-                <a class="botao" href="logout.php">Sair</a>
-            <?php else: ?>
-                <a href="sing_in.php">Entrar</a>
-                <a class="botao" href="cadastro.php">Cadastrar</a>
-            <?php endif; ?>
-        </div>
-    </nav>
-</header>
+<?php require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
 

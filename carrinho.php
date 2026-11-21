@@ -53,34 +53,11 @@ $token       = csrf_token();
             .item .qtd, .item .subtotal { grid-column: 2; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 <body>
 
-<header>
-    <nav>
-     <a class="logo" href="index.php">
-    <img src="assets/images/logo-milka.png" alt="Milka Mics">
-</a>
-
-        <div class="menu">
-            <a href="index.php">Início</a>
-            <a href="produtos.php">Produtos</a>
-            <a href="carrinho.php">Carrinho (<?= $qtdItens ?>)</a>
-
-            <?php if ($logado): ?>
-                <span>Olá, <?= $nomeUsuario ?>!</span>
-                <a href="meus_pedidos.php">Meus pedidos</a>
-                <?php if ($tipoUsuario === 'admin'): ?>
-                    <a href="admin.php">Painel administrativo</a>
-                <?php endif; ?>
-                <a class="botao" href="logout.php">Sair</a>
-            <?php else: ?>
-                <a href="sing_in.php">Entrar</a>
-                <a class="botao" href="cadastro.php">Cadastrar</a>
-            <?php endif; ?>
-        </div>
-    </nav>
-</header>
+<?php require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <h1>Seu carrinho</h1>

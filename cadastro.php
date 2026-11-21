@@ -13,18 +13,13 @@ $tipoUsuario = strtolower(trim($_SESSION['usuario_tipo'] ?? ''));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro | Milka Mics</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/cabecalho.css">
 </head>
 
 <body>
 
 
-<header>
-    <nav>
-        <a class="logo" href="index.php">
-            <img src="assets/images/logo-milka.png" alt="Milka Mics">
-        </a>
-    </nav>
-</header>
+<?php $cabecalhoModo = 'simples'; require __DIR__ . '/includes/cabecalho.php'; ?>
 
 <main>
     <div class="container">

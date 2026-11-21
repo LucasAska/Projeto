@@ -69,9 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $resultado = $conexao->query(
-    "SELECT id, NOME, EMAIL, TELEFONE, CIDADE, UF, TIPO
+    "SELECT ID, NOME, EMAIL, TELEFONE, CIDADE, UF, TIPO
      FROM USUARIOS
-     ORDER BY id DESC"
+     ORDER BY ID DESC"
 );
 
 $titulo        = 'Usuários';
@@ -115,10 +115,10 @@ require __DIR__ . '/admin/_topo.php';
                 <?php endif; ?>
 
                 <?php while ($u = $resultado->fetch_assoc()): ?>
-                    <?php $ehMinhaConta = (int) $u['id'] === $meuId; ?>
+                    <?php $ehMinhaConta = (int) $u['ID'] === $meuId; ?>
 
                     <tr>
-                        <td><?= (int) $u['id'] ?></td>
+                        <td><?= (int) $u['ID'] ?></td>
 
                         <td>
                             <strong><?= e($u['NOME']) ?></strong><br>
@@ -150,7 +150,7 @@ require __DIR__ . '/admin/_topo.php';
 
                                 <div class="acoes-linha">
 
-                                    <a href="editar_usuario.php?id=<?= (int) $u['id'] ?>"
+                                    <a href="editar_usuario.php?id=<?= (int) $u['ID'] ?>"
                                        class="btn-tabela secundario">
                                         Editar
                                     </a>
@@ -160,7 +160,7 @@ require __DIR__ . '/admin/_topo.php';
                                                value="<?= e($_SESSION['csrf']) ?>">
 
                                         <input type="hidden" name="id"
-                                               value="<?= (int) $u['id'] ?>">
+                                               value="<?= (int) $u['ID'] ?>">
 
                                         <input type="hidden" name="acao"
                                                value="tipo">
@@ -195,7 +195,7 @@ require __DIR__ . '/admin/_topo.php';
                                                value="<?= e($_SESSION['csrf']) ?>">
 
                                         <input type="hidden" name="id"
-                                               value="<?= (int) $u['id'] ?>">
+                                               value="<?= (int) $u['ID'] ?>">
 
                                         <input type="hidden" name="acao"
                                                value="excluir">
