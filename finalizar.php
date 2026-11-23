@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_valido()) {
 }
 
 $carrinho = $_SESSION['carrinho'] ?? [];
+
 if (empty($carrinho)) {
     flash('erro', 'Seu carrinho está vazio.');
     header('Location: carrinho.php');
@@ -23,83 +24,142 @@ if (empty($carrinho)) {
 }
 
 $usuarioId = (int) $_SESSION['usuario_id'];
+$transacaoAberta = false;
 
 try {
     $conexao->begin_transaction();
+    $transacaoAberta = true;
 
-    // 1) Confere cada produto e trava a linha (FOR UPDATE) para outro pedido não pegar o mesmo estoque
+    // 1. Valida os produtos e consulta os preços diretamente no banco
     $linhas = [];
+
     foreach ($carrinho as $produtoId => $qtd) {
-        $stmt = $conexao->prepare("SELECT NOME, PRECO, ESTOQUE, ATIVO FROM PRODUTOS WHERE ID = ? FOR UPDATE");
+        $produtoId = (int) $produtoId;
+        $qtd = (int) $qtd;
+
+        if ($qtd < 1) {
+            throw new RuntimeException('Quantidade de produto inválida.');
+        }
+
+        $stmt = $conexao->prepare(
+            "SELECT NOME, PRECO, ESTOQUE, ATIVO
+             FROM PRODUTOS
+             WHERE ID = ?
+             FOR UPDATE"
+        );
+
         $stmt->bind_param('i', $produtoId);
         $stmt->execute();
+
         $produto = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
         if (!$produto || (int) $produto['ATIVO'] !== 1) {
-            throw new RuntimeException('Um dos produtos não está mais disponível. Remova-o do carrinho.');
-        }
-        if ((int) $produto['ESTOQUE'] < (int) $qtd) {
-            throw new RuntimeException('Estoque insuficiente para "' . $produto['NOME'] . '".');
+            throw new RuntimeException(
+                'Um dos produtos não está mais disponível.'
+            );
         }
 
-        // O preço vem do banco, nunca da sessão
+        if ((int) $produto['ESTOQUE'] < $qtd) {
+            throw new RuntimeException(
+                'Estoque insuficiente para "' . $produto['NOME'] . '".'
+            );
+        }
+
+        $preco = (float) $produto['PRECO'];
+
         $linhas[] = [
-            'id'    => (int) $produtoId,
-            'qtd'   => (int) $qtd,
-            'preco' => (float) $produto['PRECO'],
+            'id' => $produtoId,
+            'nome' => $produto['NOME'],
+            'qtd' => $qtd,
+            'preco' => $preco,
+            'subtotal' => $preco * $qtd
         ];
     }
 
-        // 2) Cria o pedido, guardando o endereço de entrega no momento da compra
-    $stmt = $conexao->prepare("SELECT CEP, LOGRADOURO, NUMERO, COMPLEMENTO, BAIRRO, CIDADE, UF FROM USUARIOS WHERE ID = ?");
+    // 2. Registra o pedido sem armazenar dados de entrega
+    $stmt = $conexao->prepare(
+        "INSERT INTO PEDIDOS (USUARIO_ID, STATUS)
+         VALUES (?, 'pendente')"
+    );
+
     $stmt->bind_param('i', $usuarioId);
     $stmt->execute();
-    $end = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
 
-    $stmt = $conexao->prepare(
-        "INSERT INTO PEDIDOS (USUARIO_ID, STATUS, ENTREGA_CEP, ENTREGA_LOGRADOURO, ENTREGA_NUMERO,
-                              ENTREGA_COMPLEMENTO, ENTREGA_BAIRRO, ENTREGA_CIDADE, ENTREGA_UF)
-         VALUES (?, 'pendente', ?, ?, ?, ?, ?, ?, ?)"
-    );
-    $stmt->bind_param(
-        'isssssss',
-        $usuarioId,
-        $end['CEP'], $end['LOGRADOURO'], $end['NUMERO'], $end['COMPLEMENTO'],
-        $end['BAIRRO'], $end['CIDADE'], $end['UF']
-    );
-    $stmt->execute();
     $pedidoId = (int) $conexao->insert_id;
     $stmt->close();
 
-    // 3) Grava os itens e baixa o estoque
-    $stmtItem    = $conexao->prepare("INSERT INTO PEDIDOS_ITENS (PEDIDO_ID, PRODUTO_ID, QUANTIDADE, PRECO_UNIT) VALUES (?, ?, ?, ?)");
-    $stmtEstoque = $conexao->prepare("UPDATE PRODUTOS SET ESTOQUE = ESTOQUE - ? WHERE ID = ?");
+    // 3. Registra os itens do pedido
+    $stmtItem = $conexao->prepare(
+        "INSERT INTO PEDIDOS_ITENS
+         (PEDIDO_ID, PRODUTO_ID, QUANTIDADE, PRECO_UNIT)
+         VALUES (?, ?, ?, ?)"
+    );
 
     foreach ($linhas as $l) {
-        $stmtItem->bind_param('iiid', $pedidoId, $l['id'], $l['qtd'], $l['preco']);
-        $stmtItem->execute();
+        $produtoId = $l['id'];
+        $quantidade = $l['qtd'];
+        $precoUnitario = $l['preco'];
 
-        $stmtEstoque->bind_param('ii', $l['qtd'], $l['id']);
-        $stmtEstoque->execute();
+        $stmtItem->bind_param(
+            'iiid',
+            $pedidoId,
+            $produtoId,
+            $quantidade,
+            $precoUnitario
+        );
+
+        $stmtItem->execute();
     }
 
     $stmtItem->close();
-    $stmtEstoque->close();
 
+    // 4. Confirma o registro no banco
     $conexao->commit();
+    $transacaoAberta = false;
 
+    // 5. Limpa o carrinho
     unset($_SESSION['carrinho']);
-    flash('sucesso', 'Pedido #' . $pedidoId . ' realizado com sucesso!');
-} catch (Throwable $ex) {
-    $conexao->rollback();
 
-    $mensagem = $ex instanceof RuntimeException
+    // 6. Monta a mensagem para o WhatsApp
+   $mensagem = "Ol\u{00E1}! Gostaria de confirmar a inten\u{00E7}\u{00E3}o de compra do pedido #{$pedidoId}.\n\n";
+    $total = 0;
+
+    foreach ($linhas as $l) {
+        $mensagem .= $l['nome'] . "\n";
+        $mensagem .= "Quantidade: {$l['qtd']} x R$ ";
+        $mensagem .= number_format($l['preco'], 2, ',', '.');
+        $mensagem .= " = R$ ";
+        $mensagem .= number_format($l['subtotal'], 2, ',', '.');
+        $mensagem .= "\n\n";
+
+        $total += $l['subtotal'];
+    }
+
+    $mensagem .= "Total: R$ " . number_format($total, 2, ',', '.');
+
+    $mensagem .= "\n\nAguardo confirma\u{00E7}\u{00E3}o. Obrigado!";
+    // Número fictício para demonstração acadêmica
+    // Substitua pelo número real da loja quando necessário.
+    $whatsappLoja = '5500000000000';
+
+    $linkWhatsApp = 'https://wa.me/' . $whatsappLoja
+        . '?text=' . rawurlencode($mensagem);
+
+    header('Location: ' . $linkWhatsApp);
+    exit;
+
+} catch (Throwable $ex) {
+    if ($transacaoAberta) {
+        $conexao->rollback();
+    }
+
+    $mensagemErro = $ex instanceof RuntimeException
         ? $ex->getMessage()
         : 'Não foi possível finalizar o pedido. Tente novamente.';
-    flash('erro', $mensagem);
-}
 
-header('Location: carrinho.php');
-exit;
+    flash('erro', $mensagemErro);
+
+    header('Location: carrinho.php');
+    exit;
+}

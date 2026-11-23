@@ -12,6 +12,8 @@ if ($conexao->connect_error) {
     die("Falha na ligação: " . $conexao->connect_error);
 }
 
+$conexao->set_charset("utf8mb4");
+
 $conexao->query("SET time_zone = '-03:00'");
 
 ?>
