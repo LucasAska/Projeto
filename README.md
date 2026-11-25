@@ -19,8 +19,14 @@ Projeto acadêmico em PHP e MySQL, rodando em Docker.
 11. [Problemas comuns](#problemas-comuns)
 ## Equipe
  
-- **Back-end:** Diego
-- **Front-end:** Jonatas
+- **Back-end:** Diego e Ronald
+- **Front-end:** Jonatas e Julio
+- **Banco de dados** Lucas e Bruno
+- **Docker** Lucas 
+- **Documentação** Thiago e Anderson
+- **Roteiro e Vídeo** Jonatas e Giuliana
+- **Banner** Matheus
+
 ## Tecnologias
  
 - PHP 8.2 com Apache
@@ -34,6 +40,7 @@ Projeto acadêmico em PHP e MySQL, rodando em Docker.
  
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e aberto
 - [VS Code](https://code.visualstudio.com/) (recomendado)
+- [PHP](https://www.php.net/) (recomendado)
 ### Passo a passo
  
 1. Clone o repositório e abra a pasta no VS Code.
