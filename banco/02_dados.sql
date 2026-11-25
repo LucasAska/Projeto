@@ -10,9 +10,9 @@ VALUES
 (1, 'Brinco de Prata', 'Brinco de prata com pedras preciosas.', 150.00, 10, 'brinco_prata.jpg'),
 (2, 'Vaso de Cerâmica', 'Vaso de cerâmica pintado à mão.', 80.00, 5, 'vaso_ceramica.jpg'),
 (3, 'Cachecol de Crochê', 'Cachecol feito à mão em crochê.', 60.00, 15, 'cachecol_croche.jpg'),
-(1, 'Brinco de Café','123',20.00, 5, 'Brinco_Cafe.jpg'),
-(1, 'Brinco de Pirulito', '123',20.00, 5, 'Brinco_Pirulito.jpg'),
-(1, 'Brinco de Coracao',  '123',20.00, 5, 'Brinco_Coracao.jpg');
+(1, 'Brinco de Café','Brinco artesanal temático de café, leve e divertido para o dia a dia.',20.00, 5, 'Brinco_Cafe.jpg'),
+(1, 'Brinco de Pirulito', 'Brinco artesanal de pirulito, ideal para quem gosta de cores vibrantes.',20.00, 5, 'Brinco_Pirulito.jpg'),
+(1, 'Brinco de Coração',  'Brinco simbólico de coração, perfeito para expressar amor e carinho.',20.00, 5, 'Brinco_Coracao.jpg');
 
 INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, SENHA, CEP, LOGRADOURO, NUMERO, BAIRRO, CIDADE, UF, TIPO) 
 VALUES 
