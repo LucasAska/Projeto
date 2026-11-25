@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: sing_in.php");
+    header("Location: sign_in.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ $email = trim($_POST["email"] ?? "");
 $senhaDigitada = $_POST["senha"] ?? "";
 
 if ($email === "" || $senhaDigitada === "") {
-    header("Location: sing_in.php?erro=campos");
+    header("Location: sign_in.php?erro=campos");
     exit;
 }
 
@@ -33,7 +33,7 @@ $usuario = $resultado->fetch_assoc();
 $stmt->close();
 
 if (!$usuario) {
-    header("Location: sing_in.php?erro=credenciais");
+    header("Location: sign_in.php?erro=credenciais");
     exit;
 }
 
@@ -64,7 +64,7 @@ if (!$senhaValida && hash_equals($senhaBanco, $senhaDigitada)) {
 }
 
 if (!$senhaValida) {
-    header("Location: sing_in.php?erro=credenciais");
+    header("Location: sign_in.php?erro=credenciais");
     exit;
 }
 

@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 function exigirLogin()
 {
     if (!isset($_SESSION["usuario_id"])) {
-        header("Location: sing_in.php?erro=login_necessario");
+        header("Location: sign_in.php?erro=login_necessario");
     exit;
     }
 }

@@ -5,7 +5,7 @@ require_once __DIR__ . '/config/carrinho.php';
 
 if (empty($_SESSION['usuario_id'])) {
     flash('erro', 'Entre na sua conta para finalizar o pedido.');
-    header('Location: sing_in.php');
+    header('Location: sign_in.php');
     exit;
 }
 

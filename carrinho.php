@@ -120,7 +120,7 @@ $token       = csrf_token();
                     </button>
                 </form>
             <?php else: ?>
-                <a class="btn" href="sing_in.php">Entre para finalizar</a>
+                <a class="btn" href="sign_in.php">Entre para finalizar</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

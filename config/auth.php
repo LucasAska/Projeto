@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 function exigir_admin(): void
 {
     if (empty($_SESSION['usuario_id'])) {
-        header('Location: /sing_in.php');
+        header('Location: /sign_in.php');
         exit;
     }
 

@@ -212,7 +212,7 @@ try {
                 <h1>Cadastro realizado!</h1>
                 <p>Sua conta foi criada com sucesso.</p>
                 <p>Agora você já pode fazer login e aproveitar a Milka Mics.</p>
-                <a class='botao' href='sing_in.php'>Fazer login</a>
+                <a class='botao' href='sign_in.php'>Fazer login</a>
             </section>
         </main>
 

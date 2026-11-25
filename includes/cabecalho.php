@@ -70,7 +70,7 @@ $cab_nome   = htmlspecialchars(
                         <a class="site-botao" href="<?= $cab_base ?>/logout.php">Sair</a>
                     </div>
                 <?php else: ?>
-                    <a href="<?= $cab_base ?>/sing_in.php">Entrar</a>
+                    <a href="<?= $cab_base ?>/sign_in.php">Entrar</a>
                     <a class="site-botao" href="<?= $cab_base ?>/cadastro.php">Cadastrar</a>
                 <?php endif; ?>
             </div>

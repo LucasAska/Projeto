@@ -179,7 +179,7 @@ Projeto/
 ├── produto.php                  # Página do produto
 ├── cadastro.php                 # Cadastro de conta
 ├── cadastro_salvar.php          # Grava a nova conta
-├── sing_in.php                  # Tela de login
+├── sign_in.php                  # Tela de login
 ├── recebe.php                   # Valida o login e abre a sessão
 ├── logout.php                   # Encerra a sessão
 ├── docker-compose.yml
