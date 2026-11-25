@@ -96,6 +96,12 @@ try {
          VALUES (?, ?, ?, ?)"
     );
 
+    $stmtEstoque = $conexao->prepare(
+        "UPDATE PRODUTOS
+         SET ESTOQUE = ESTOQUE - ?
+         WHERE ID = ? AND ESTOQUE >= ?"
+    );
+
     foreach ($linhas as $l) {
         $produtoId = $l['id'];
         $quantidade = $l['qtd'];
@@ -108,11 +114,16 @@ try {
             $quantidade,
             $precoUnitario
         );
-
         $stmtItem->execute();
+
+        $stmtEstoque->bind_param(
+            'iii', $quantidade, $produtoId, $quantidade
+        );
+        $stmtEstoque->execute();
     }
 
     $stmtItem->close();
+    $stmtEstoque->close();
 
     // 4. Confirma o registro no banco
     $conexao->commit();
